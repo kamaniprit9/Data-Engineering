@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Food Delivery Dataset Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="gradient-mesh">
+  <!-- SECTION: App Shell -->
+  <div class="app-shell grain">
+    <!-- SECTION: Header -->
+    <header class="app-header">
+      <div class="logo-lockup">
+        <div class="logo-mark">FD</div>
+        <div class="logo-text">
+          <h1>Food Delivery Dataset Generator</h1>
+          <p>Generate realistic, relational MySQL data for your food-delivery projects in one click.</p>
+        </div>
+      </div>
+      <div class="badge">MySQL-ready</div>
+    </header>
+
+    <!-- SECTION: Controls -->
+    <main class="layout">
+      <section class="control-panel shadow-soft gradient-border">
+        <h2>1. Configure dataset size</h2>
+        <p class="section-help">Choose how much data you want. Relationships are generated automatically.</p>
+
+        <form id="config-form" class="config-form" novalidate>
+          <div class="field-group">
+            <label for="usersCount">Users</label>
+            <div class="field-inline">
+              <input type="number" id="usersCount" name="usersCount" min="1" max="5000" value="50" required />
+              <span class="field-hint">Each user gets random addresses & confirmed orders.</span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="restaurantsCount">Restaurants</label>
+            <div class="field-inline">
+              <input type="number" id="restaurantsCount" name="restaurantsCount" min="1" max="1000" value="20" required />
+              <span class="field-hint">Every restaurant will have its own menu items.</span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="ordersCount">Orders (confirmed)</label>
+            <div class="field-inline">
+              <input type="number" id="ordersCount" name="ordersCount" min="1" max="20000" value="200" required />
+              <span class="field-hint">Only real placed orders. No abandoned carts.</span>
+            </div>
+          </div>
+
+          <div class="options-row">
+            <label class="checkbox-pill">
+              <input type="checkbox" id="includeFailedPayments" checked />
+              <span>Include some failed / pending payments</span>
+            </label>
+            <label class="checkbox-pill">
+              <input type="checkbox" id="includePartnerStatus" checked />
+              <span>Randomize partner availability status</span>
+            </label>
+          </div>
+
+          <button type="submit" id="generate-btn" class="btn-primary">
+            <span class="btn-label">Generate dataset</span>
+            <span class="btn-sub">MySQL CSV per table</span>
+            <span class="spinner" aria-hidden="true"></span>
+          </button>
+
+          <p id="status-message" class="status-message" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <!-- SECTION: Output -->
+      <section class="output-panel shadow-soft">
+        <div class="output-header">
+          <h2>2. Preview & export</h2>
+          <p class="section-help">Switch between tables, inspect a sample, then copy or download CSV.</p>
+        </div>
+
+        <!-- Tabs for tables -->
+        <nav class="tabs" aria-label="Table selector">
+          <button class="tab active" data-table="users">Users</button>
+          <button class="tab" data-table="addresses">Addresses</button>
+          <button class="tab" data-table="restaurants">Restaurants</button>
+          <button class="tab" data-table="menuItems">Menu_Items</button>
+          <button class="tab" data-table="orders">Orders</button>
+          <button class="tab" data-table="orderDetails">Order_Details</button>
+          <button class="tab" data-table="deliveryPartners">Delivery_Partners</button>
+          <button class="tab" data-table="payments">Payments</button>
+        </nav>
+
+        <!-- Export controls -->
+        <div class="export-bar">
+          <button id="copyCsvBtn" class="btn-secondary" type="button">Copy visible CSV</button>
+          <button id="downloadCsvBtn" class="btn-outline" type="button">Download visible CSV</button>
+          <span class="export-meta" id="row-count">No data yet. Generate to begin.</span>
+        </div>
+
+        <!-- Table preview + raw CSV -->
+        <div class="preview-wrapper">
+          <div class="table-preview" aria-live="polite">
+            <table id="preview-table">
+              <thead></thead>
+              <tbody></tbody>
+            </table>
+            <div class="empty-state" id="empty-state">
+              <p>Nothing here yet. Configure counts on the left and hit <strong>Generate dataset</strong>.</p>
+            </div>
+          </div>
+
+          <div class="raw-output">
+            <div class="raw-header">
+              <span>CSV preview</span>
+              <span class="raw-sub">Perfect for <code>LOAD DATA INFILE</code> in MySQL.</span>
+            </div>
+            <textarea id="csv-output" rows="10" spellcheck="false" readonly></textarea>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- SECTION: Footer / helper -->
+    <footer class="app-footer">
+      <p>
+        Tip: Use generated CSV files with
+        <code>LOAD DATA INFILE ... FIELDS TERMINATED BY ',' ENCLOSED BY '"'</code>
+        in MySQL.
+      </p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
